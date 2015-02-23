@@ -8,6 +8,9 @@ if (Meteor.isClient) {
         // helper functions go here
         'player': function(){
             return PlayersList.find()
+        },
+        'count': function(){
+            return PlayersList.find().count();
         }
     });
 }
