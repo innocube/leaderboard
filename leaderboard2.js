@@ -5,12 +5,19 @@ if (Meteor.isClient) {
     console.log("Hello client");
 
     Template.leaderboard.helpers({
-        // helper functions go here
+        // helper functions go here:
         'player': function(){
             return PlayersList.find()
         },
         'count': function(){
             return PlayersList.find().count();
+        }
+    });
+
+    Template.leaderboard.events({
+       // events go here:
+        'click .player': function(){
+            console.log("You clicked a .player element");
         }
     });
 }
