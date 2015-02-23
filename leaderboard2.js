@@ -7,7 +7,7 @@ if (Meteor.isClient) {
     Template.leaderboard.helpers({
         // helper functions go here
         'player': function(){
-            return "Some other text"
+            return PlayersList.find()
         }
     });
 }
