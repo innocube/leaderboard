@@ -8,11 +8,13 @@
 </body>
 
 <template name="leaderboard">
+    Number of players in Leaderboard: {{count}}<br>
+
     <ul>
         {{#each player}}
             <li class="player {{selectedClass}}">{{name}}: {{score}}</li>
         {{/each}}
     </ul>
 
-    Number of players in Leaderboard: {{count}}
+    <input type="button" class="increment" value="Give 5 Points">
 </template>
