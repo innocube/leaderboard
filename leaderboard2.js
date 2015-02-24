@@ -6,15 +6,19 @@ if (Meteor.isClient) {                      // this code only runs on the client
 
     Template.leaderboard.helpers({          // helper functions go here:
         'player': function(){
-            return PlayersList.find()
+            return PlayersList.find({}, {sort: {score: -1, name: 1} })
         },
         'selectedClass': function(){
             var playerId = this._id;
             var selectedPlayer = Session.get('selectedPlayer');
             if (playerId == selectedPlayer) {
-                console.log("Selected Player: " + selectedPlayer);
+                console.log("Selected Player: " + PlayersList.findOne(selectedPlayer).name);
                 return "selected"
             }
+        },
+        'showSelectedPlayer': function(){
+            var selectedPlayer = Session.get('selectedPlayer');
+            return PlayersList.findOne(selectedPlayer)
         },
         'count': function(){
             return PlayersList.find().count();
@@ -29,6 +33,10 @@ if (Meteor.isClient) {                      // this code only runs on the client
         'click .increment': function(){
             var selectedPlayer = Session.get('selectedPlayer');
             PlayersList.update(selectedPlayer, {$inc: {score: 5} });
+        },
+        'click .decrement': function(){
+            var selectedPlayer = Session.get('selectedPlayer');
+            PlayersList.update(selectedPlayer, {$inc: {score: -5} });
         }
     });
 }
