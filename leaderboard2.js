@@ -6,7 +6,9 @@ if (Meteor.isClient) {                      // this code only runs on the client
 
     Template.leaderboard.helpers({          // helper functions go here:
         'player': function(){
-            return PlayersList.find({}, {sort: {score: -1, name: 1} })
+            var currentUserId = Meteor.userId();
+            return PlayersList.find({createdBy: currentUserId},
+                                    {sort: {score: -1, name: 1} })
         },
         'selectedClass': function(){
             var playerId = this._id;
@@ -50,14 +52,19 @@ if (Meteor.isClient) {                      // this code only runs on the client
        'submit form': function(event){
            event.preventDefault();
            var playerNameVar = event.target.playerName.value;
-           var playerScoreVar = event.target.playerScore.value;
+           var playerScoreVar = 0;
+           if (event.target.playerScore.value){
+               playerScoreVar = parseInt(event.target.playerScore.value);
+           }
+           var currentUserId = Meteor.userId();
            PlayersList.insert({
                name: playerNameVar,
-               score: playerScoreVar
+               score: playerScoreVar,
+               createdBy: currentUserId
            });
            event.target.playerName.value = "";
            event.target.playerScore.value = "";
-           console.log("Added " + playerNameVar);
+           console.log("Added " + playerNameVar + " (score: " + playerScoreVar + ")");
        }
     });
 }
