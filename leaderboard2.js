@@ -40,6 +40,7 @@ if (Meteor.isClient) {                      // this code only runs on the client
         },
         'click .remove': function(){
             var selectedPlayer = Session.get('selectedPlayer');
+            alert("Do you really want to delete the user " + PlayersList.findOne(selectedPlayer).name + "?");
             console.log("Removing " + PlayersList.findOne(selectedPlayer).name);
             PlayersList.remove(selectedPlayer);
         }
@@ -49,10 +50,13 @@ if (Meteor.isClient) {                      // this code only runs on the client
        'submit form': function(event){
            event.preventDefault();
            var playerNameVar = event.target.playerName.value;
+           var playerScoreVar = event.target.playerScore.value;
            PlayersList.insert({
                name: playerNameVar,
-               score: 0
+               score: playerScoreVar
            });
+           event.target.playerName.value = "";
+           event.target.playerScore.value = "";
            console.log("Added " + playerNameVar);
        }
     });
