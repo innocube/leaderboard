@@ -3,24 +3,24 @@ PlayersList = new Mongo.Collection('players');
 
 if (Meteor.isClient) {                      // this code only runs on the client:
     console.log("Hello client");
+    Meteor.subscribe('thePlayers');
 
     Template.leaderboard.helpers({          // helper functions go here:
         'player': function(){
             var currentUserId = Meteor.userId();
-            return PlayersList.find({createdBy: currentUserId},
-                                    {sort: {score: -1, name: 1} })
+            return PlayersList.find({}, {sort: {score: -1, name: 1} });
         },
         'selectedClass': function(){
             var playerId = this._id;
             var selectedPlayer = Session.get('selectedPlayer');
             if (playerId == selectedPlayer) {
                 console.log("Selected Player: " + PlayersList.findOne(selectedPlayer).name);
-                return "selected"
+                return "selected";
             }
         },
         'showSelectedPlayer': function(){
             var selectedPlayer = Session.get('selectedPlayer');
-            return PlayersList.findOne(selectedPlayer)
+            return PlayersList.findOne(selectedPlayer);
         },
         'count': function(){
             return PlayersList.find().count();
@@ -72,4 +72,9 @@ if (Meteor.isClient) {                      // this code only runs on the client
 
 if (Meteor.isServer) {                      // this code only runs on the server:
     console.log("Hello server");
+    console.log(PlayersList.find().fetch());
+    Meteor.publish('thePlayers', function(){
+        var currentUserId = this.userId;
+        return PlayersList.find({createdBy: currentUserId});
+    })
 }
