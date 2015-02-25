@@ -1,0 +1,9 @@
+<template name="addPlayerForm">
+    {{#if currentUser}}
+        <form>
+            Name: <input type="text" name="playerName">
+            Score: <input type="text" name="playerScore">
+            <input type="submit" value="Add Player">
+        </form>
+    {{/if}}
+</template>
